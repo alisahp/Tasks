@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-pod
+spec:
+  containers:
+  - name: redis
+    image: redis
+    command:
+      - sleep
+      - "10000"
+    env:
+      - name: SECRET_CONFIG
+        valueFrom:
+          secretKeyRef:
+            name: secret-creds
+            key: config.yaml
+  restartPolicy: Never
+
