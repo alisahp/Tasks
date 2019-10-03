@@ -1,0 +1,56 @@
+nginx-app-dep.yaml
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kubernetes.io/change-cause: "Update to 1.0.0"
+  labels:
+    run: nginx-app
+  name: nginx-app
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      run: nginx-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        run: nginx-app
+    spec:
+      containers:
+      - image: ikambarov/web-app:1.5.0
+        name: web-app
+
+  831  kubectl create -f nginx-app-dep.yaml
+  833  kubectl edit deployment nginx-app-dep.yaml
+  834  kubectl edit deployment nginx-app-dep
+  835  kubectl get deployments
+  836  kubectl edit deployment nginx-app
+  837  kubectl get deployments
+  838  kubectl rollout history deployment nginx-app
+  839  kubectl edit deployment nginx-app
+  840  kubectl rollout history deployment nginx-ap
+
+
+alisaitdr@cloudshell:~/kubernetes5 (analog-vault-251123)$ kubectl get deployments       
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-app   5/5     5            5           5m22s
+alisaitdr@cloudshell:~/kubernetes5 (analog-vault-251123)$ kubectl rollout history deployment nginx-app
+deployment.extensions/nginx-app
+REVISION  CHANGE-CAUSE
+1         Update to 1.15.0
+
+alisaitdr@cloudshell:~/kubernetes5 (analog-vault-251123)$ kubectl edit deployment nginx-app
+deployment.extensions/nginx-app edited
+alisaitdr@cloudshell:~/kubernetes5 (analog-vault-251123)$ kubectl rollout history deployment nginx-app
+deployment.extensions/nginx-app
+REVISION  CHANGE-CAUSE
+1         Update to 1.14.0
+
